@@ -1,7 +1,7 @@
 import { serviceOrderData } from "@/schemas/serviceOrder.schema";
 import api from "@/services/api";
 import { GetServerSideProps, NextPage } from "next";
-import CardServiceOrder from "../components/card";
+import CardServiceOrder from "../components/orders/cardOrder";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import { DivHomeBase } from "../styles/home";
@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { parseCookies } from "nookies";
 import { useServiceOrder } from "@/contexts/serviceOrderContext";
-import FilterModal from "@/components/filterModal";
+import FilterModal from "@/components/orders/filterOrderModal";
 import FinancesModal from "@/components/financesModal";
 
 interface HomeProps {

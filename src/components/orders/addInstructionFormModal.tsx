@@ -1,19 +1,19 @@
 import { useState } from "react";
-import { useServiceOrder } from "@/contexts/serviceOrderContext";
-import Modal from "./modal";
-import { serviceOrderData } from "@/schemas/serviceOrder.schema";
+import { useOrder } from "@/contexts/orderContext";
+import Modal from "../modal";
+import { orderData } from "@/schemas/order.schema";
 import { toast } from "react-toastify";
 import api from "@/services/api";
 import { parseCookies } from "nookies";
 import { useRouter } from "next/router";
 
-interface iCardServiceOrderProps {
-  serviceOrder: serviceOrderData;
+interface iCardOrderProps {
+  order: orderData;
 }
 
-const AddInstructionFormModal = ({ serviceOrder }: iCardServiceOrderProps) => {
+const AddInstructionFormModal = ({ order }: iCardOrderProps) => {
 
-  const { SetShowInstructionModal, getAllServiceOrders } = useServiceOrder();
+  const { SetShowInstructionModal, getAllOrders } = useOrder();
   const [instruction, setInstruction] = useState("");
   const router = useRouter()
 
@@ -22,13 +22,13 @@ const AddInstructionFormModal = ({ serviceOrder }: iCardServiceOrderProps) => {
 
   const onSave = async () => {
     const formData = {
-      client: serviceOrder.client,
-      description: `${instruction} ||| ${serviceOrder.description}`,
+      client: order.client,
+      description: `${instruction} ||| ${order.description}`,
       status: "AGUARDANDO ARTE"
     };
 
     try {
-      const response = await api.patch(`serviceOrders/${serviceOrder.id}`, formData, {
+      const response = await api.patch(`orders/${order.id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -38,8 +38,8 @@ const AddInstructionFormModal = ({ serviceOrder }: iCardServiceOrderProps) => {
       if (response.status === 200) {
         toast.success("Instrução de arte adicionada com sucesso!");
         SetShowInstructionModal()
-        getAllServiceOrders()
-        router.push(`/${serviceOrder.id}`)
+        getAllOrders()
+        router.push(`/${order.id}`)
       } else {
         toast.error("Ocorreu um erro ao adicionar a instrução de arte.");
       }
@@ -51,13 +51,13 @@ const AddInstructionFormModal = ({ serviceOrder }: iCardServiceOrderProps) => {
 
   return (
     <Modal>
-      <h2 style={{fontSize:"18pt", fontFamily:"sans-serif", textAlign:"center", fontWeight:"bold"}}>Adicionar Instrução de Arte</h2>
-      <textarea value={instruction} onChange={(e) => setInstruction(e.target.value)} style={{fontSize:"20pt", padding: "5px", height:"50%"}} />
+      <h2>Adicionar Instrução de Arte</h2>
+      <textarea value={instruction} onChange={(e) => setInstruction(e.target.value)} />
       <div>
-        <button onClick={SetShowInstructionModal} style={{fontSize:"20pt", padding: "5px", width:"50%"}} className="buttonCancel">
+        <button onClick={SetShowInstructionModal} className="buttonCancel">
           Voltar
         </button>
-        <button className="buttonSave" onClick={onSave} style={{fontSize:"20pt", padding: "5px", width:"50%"}}>
+        <button className="buttonSave" onClick={onSave}>
           Salvar
         </button>
       </div>

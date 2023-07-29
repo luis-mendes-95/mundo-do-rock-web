@@ -1,7 +1,8 @@
 import { useServiceOrder } from "@/contexts/serviceOrderContext";
-import Modal from "./modal";
+import Modal from "../modal";
 
 const FilterModal = () => {
+  
   const { SetShowFilterModal, SetShowCards, showCards, serviceOrders } =    useServiceOrder();
 
   const allLength: number = serviceOrders.filter((os: any) => {
